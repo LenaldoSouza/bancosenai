@@ -6,15 +6,15 @@
         public string NomeCarteira { get; set; } = string.Empty;
         public decimal ApetiteCarteira { get; set; }
 
-        public Carteira(int numeroCarteira, string nomeCarteira, decimal apetiteCarteira)
+        public Carteira(int numeroCarteira, string nomeCarteira, decimal apetiteCarteira = 1000000)
         {
             NumeroCarteira = numeroCarteira;
             NomeCarteira = nomeCarteira;
             ApetiteCarteira = apetiteCarteira;
 
-            if (ApetiteCarteira < NumeroCarteira)
+            if (ApetiteCarteira < 0)
             {
-                throw new ArgumentException("O valor do apetite deve ser maior ao valor da carteira");
+                throw new ArgumentException("Apetite carteira não pode ser negativo.");
             }
         }
     }
