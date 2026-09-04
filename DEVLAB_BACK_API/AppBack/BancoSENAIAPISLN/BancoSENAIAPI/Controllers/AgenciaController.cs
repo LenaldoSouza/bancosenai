@@ -9,9 +9,10 @@ namespace BancoSENAIAPI.Controllers
     {
         private static List<Agencia> _agencias = new List<Agencia>
         {
-            new Agencia { NumeroAgencia = 1001, Cidade = "Aracaju", SiglaEstado = "SE" },
-            new Agencia { NumeroAgencia = 2002, Cidade = "São Paulo", SiglaEstado = "SP" },
-            new Agencia { NumeroAgencia = 3003, Cidade = "Salvador", SiglaEstado = "BA" }
+            new Agencia (1001, "Aracaju", "SE" ),
+            new Agencia (2002, "São Paulo", "SP" ),
+            new Agencia (3003, "Salvador", "BA" )
+            //eu mudei isso só por chatisse minha mesmo :^)
         };
 
         [HttpGet]
@@ -67,5 +68,6 @@ namespace BancoSENAIAPI.Controllers
             _agencias.Remove(agencia);
             return Ok(new { message = "Agência excluída com sucesso." }); // Status 200 [6]
         }
+
     }
 }

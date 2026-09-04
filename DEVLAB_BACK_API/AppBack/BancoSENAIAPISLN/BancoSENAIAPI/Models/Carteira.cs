@@ -17,6 +17,5 @@
                 throw new ArgumentException("O valor do apetite deve ser maior ao valor da carteira");
             }
         }
-        Carteira carteiraTeste = new Carteira(0000,"Teste",0001);
     }
 }
