@@ -1,4 +1,6 @@
 using Microsoft.OpenApi.Models;
+using BancoSENAIAPI.Repositories;
+using BancoSENAIAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,9 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod() // Permite os verbos GET, POST, PUT, DELETE [2]
                         .AllowAnyHeader()); // Permite o envio de JSON no corpo da mensagem [3]
 });
+
+builder.Services.AddSingleton<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
 
 var app = builder.Build();
 
