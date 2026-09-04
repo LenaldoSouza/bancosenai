@@ -1,4 +1,5 @@
 ﻿using BancoSENAIAPI.Models;
+using BancoSENAIAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BancoSENAIAPI.Controllers
