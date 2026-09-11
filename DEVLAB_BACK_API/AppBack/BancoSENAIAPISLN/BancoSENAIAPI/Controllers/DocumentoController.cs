@@ -2,10 +2,13 @@
 
 namespace BancoSENAIAPI.Controllers
 {
-    [ApiControler]
-    [Route("api/v1/[controller]")]
-    public class DocumentoController : Controllers
+    [ApiController]
+    [Route("api/v1/[Controller]")]
+    public class DocumentoController : Controller
     {
-        private readonly string _documentoRaiz = Path.Combine();
+        private readonly string _caminhoRaiz = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "ClienteArquivos"
+            );
     }
 }
