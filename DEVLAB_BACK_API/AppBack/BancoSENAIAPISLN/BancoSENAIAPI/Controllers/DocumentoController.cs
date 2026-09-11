@@ -10,5 +10,9 @@ namespace BancoSENAIAPI.Controllers
             Directory.GetCurrentDirectory(),
             "ClienteArquivos"
             );
+        private static List<Models.DocumentoMetadado> _documentosMetadados = new List<Models.DocumentoMetadado>();
+
+        private static int _nextId = 1;
+        [HttpPost("upload/{codigoCliente}")]
     }
 }
