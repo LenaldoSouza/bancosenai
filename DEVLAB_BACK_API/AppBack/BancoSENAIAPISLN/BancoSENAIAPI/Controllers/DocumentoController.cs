@@ -20,6 +20,8 @@ namespace BancoSENAIAPI.Controllers
             {
                 return BadRequest("Nenhum arquivo foi enviado.");
             }
+
+            string pastaCliente = Path.Combine(_caminhoRaiz, CodigoCliente.ToString());
         }
     }
 }
