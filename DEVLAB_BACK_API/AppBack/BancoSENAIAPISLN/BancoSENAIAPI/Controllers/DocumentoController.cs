@@ -50,6 +50,66 @@ namespace BancoSENAIAPI.Controllers
             _documentosMetadados.Add(documentoMetadados);
 
             return Ok(new { mensagem = "Documento anexado com sucesso", arquivoSalvo = novoNome });
+
+            ```csharp
+[HttpGet("listar/{codigoCliente}")]
+public IActionResult Listar(int codigoCliente)
+            {
+                var documentos = _documentosMetadados
+                    .Where(d => d.CodigoCliente == codigoCliente)
+                    .ToList();
+
+                if (!documentos.Any())
+                {
+                    return NotFound("Nenhum documento encontrado para este cliente.");
+                }
+
+                return Ok(documentos);
+            }
+
+
+            [HttpGet("download/{id}")]
+            public IActionResult Download(int id)
+            {
+                var documento = _documentosMetadados
+                    .FirstOrDefault(d => d.Id == id);
+
+                if (documento == null)
+                {
+                    return NotFound("Documento não encontrado.");
+                }
+
+                if (!System.IO.File.Exists(documento.Caminho))
+                {
+                    return NotFound("Arquivo físico não encontrado.");
+                }
+
+                byte[] fileBytes = System.IO.File.ReadAllBytes(documento.Caminho);
+
+                string nomeArquivo = documento.Name + documento.Extensao;
+
+                return File(fileBytes, "application/octet-stream", nomeArquivo);
+            }
+
+
+            [HttpDelete("excluir/{id}")]
+            public IActionResult Excluir(int id)
+            {
+                var documento = _documentosMetadados
+                    .FirstOrDefault(d => d.Id == id);
+
+                if (documento == null)
+                {
+                    return NotFound("Documento não encontrado.");
+                }
+
+                System.IO.File.Delete(documento.Caminho);
+                _documentosMetadados.Remove(documento);
+
+                return Ok("Documento excluído com sucesso.");
+            }
+```
+
         }
     }
 }
