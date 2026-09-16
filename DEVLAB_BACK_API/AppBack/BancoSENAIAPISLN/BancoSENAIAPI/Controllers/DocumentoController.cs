@@ -34,6 +34,17 @@ namespace BancoSENAIAPI.Controllers
                     "O arquivo excede o limite máximo de 2 MB."
                 );
             }
+
+            string extensao = Path.GetExtension(arquivo.FileName)
+                .ToLowerInvariant();
+
+            string[] extensoesPermitidas =
+            {
+                ".pdf",
+                ".jpg",
+                ".png"
+            };
+
         }
     }
 }
