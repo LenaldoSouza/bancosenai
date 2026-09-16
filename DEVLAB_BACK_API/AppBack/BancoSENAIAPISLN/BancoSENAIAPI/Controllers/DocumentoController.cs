@@ -9,47 +9,31 @@ namespace BancoSENAIAPI.Controllers
         private readonly string _caminhoRaiz = Path.Combine(
             Directory.GetCurrentDirectory(),
             "ClienteArquivos"
-            );
-        private static List<Models.DocumentoMetadado> _documentosMetadados = new List<Models.DocumentoMetadado>();
+        );
+
+        private static List<Models.DocumentoMetadado> _documentosMetadados =
+            new List<Models.DocumentoMetadado>();
 
         private static int _nextId = 1;
+
         [HttpPost("upload/{codigoCliente}")]
-        public async Task<ActionResult> AnexarArquivo(int codigoCliente, IFormFile arquivo)
+        public async Task<ActionResult> AnexarArquivo(
+            int codigoCliente,
+            IFormFile arquivo)
         {
             if (arquivo == null || arquivo.Length == 0)
             {
                 return BadRequest("Nenhum arquivo foi enviado.");
             }
 
-            string pastaCliente = Path.Combine(_caminhoRaiz, codigoCliente.ToString());
+            const long limiteTamanho = 2 * 1024 * 1024;
 
-            if (!Directory.Exists(pastaCliente))
+            if (arquivo.Length > limiteTamanho)
             {
-                Directory.CreateDirectory(pastaCliente);
+                return BadRequest(
+                    "O arquivo excede o limite máximo de 2 MB."
+                );
             }
-
-            string extensao = Path.GetExtension(arquivo.FileName);
-            string nomeOriginal = Path.GetFileNameWithoutExtension(arquivo.FileName);
-            string novoNome = $"{codigoCliente}_{nomeOriginal}_{Guid.NewGuid()}{extensao}";
-            string caminhoFinal = Path.Combine(pastaCliente, novoNome);
-
-            using (var strean = new FileStrean(caminhoFinal, FileMode.Create))
-            {
-                await arquivo.CopyToAsync(strean);
-            }
-
-            var documentoMetadados = new Models.DocumentoMetadado
-            {
-                Id = _nextId++,
-                Nome = nomeOriginal,
-                Extensao = extensao,
-                Caminho = caminhoFinal,
-                CodigoCliente = codigoCliente,
-            };
-
-            _documentosMetadados.Add(documentoMetadados);
-
-            return Ok(new { mensagem = "Documento anexado com sucesso", arquivoSalvo = novoNome });
         }
     }
 }
