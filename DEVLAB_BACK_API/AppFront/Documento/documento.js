@@ -173,8 +173,6 @@ async function enviarDocumento() {
 
         alert("Documento enviado com sucesso!");
 
-        // HU04
-        // Busca novamente os documentos após o upload
         await buscarDocumentos(codigoCliente);
 
         document.getElementById("codigoCliente").value = "";
@@ -187,3 +185,4 @@ async function enviarDocumento() {
         alert("Erro ao conectar com a API.");
     }
 }
+
