@@ -5,17 +5,44 @@
     <title>Gestão de documentos - banco senai</title>
     <link rel="stylesheet" href="document.css" />
 </head>
+
 <body>
     <div class="container">
 
-        <h1> Gestão de documentos</h1>
-        <input type="number" id="codigoCliente" placeholder="Codigo cliente" /><br />
-        <input type="file" id="arquivo" /> <br />
+        <h1>Gestão de documentos</h1>
 
-        <button type="submit" id="bntEnviar" onclick="enviarDocumento()">Enviar</button>
+        <input type="number" id="codigoCliente" placeholder="Código cliente" />
+        <input type="file" id="arquivo" />
+
+        <div class="btn-group">
+            <button type="button" id="btnEnviar" onclick="enviarDocumento()">
+                Enviar
+            </button>
+
+            <button type="button" onclick="buscarDocumentos()">
+                Buscar Documentos
+            </button>
+        </div>
+
+        <div id="result">
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Extensão</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabelaDocumentos">
+            </tbody>
+        </table>
+
     </div>
+
     <script src="documento.js"></script>
 </body>
 </html>
-
-//mudança desnecessaria pra eu conseguir fazer pull request yoooooooo
