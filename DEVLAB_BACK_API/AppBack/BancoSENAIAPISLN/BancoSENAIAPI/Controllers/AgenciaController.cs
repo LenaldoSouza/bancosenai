@@ -1,5 +1,7 @@
 ﻿using BancoSENAIAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using BancoSENAIAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BancoSENAIAPI.Controllers
 {
@@ -7,22 +9,20 @@ namespace BancoSENAIAPI.Controllers
     [Route("api/v1/[controller]")]
     public class AgenciaController : ControllerBase
     {
-        private static List<Agencia> _agencias = new List<Agencia>
-        {
-            new Agencia (1001, "Aracaju", "SE" ),
-            new Agencia (2002, "São Paulo", "SP" ),
-            new Agencia (3003, "Salvador", "BA" )
-            //eu mudei isso só por chatisse minha mesmo :^)
-        };
-
         [HttpGet]
-        public IActionResult ListarTodas()
+        public async Task<IActionResult> ListarTodas()
         {
-            return Ok(_agencias);
-        }
+            var agencias = await _context.Agencia.FirstOrDefaultAsync(a async => a.NumeroAgencia == codigo);
 
+            if (agencias == null)
+            {
+                return NotFound(new {message = "Agencia não encontrada."});
+            }
+
+            return Ok(agencias);
+        }
         [HttpPost]
-        public IActionResult Cadastrar([FromBody] Agencia novaAgencia)
+        public async Task<IActionResult> Cadastrar([FromBody] Agencia novaAgencia)
         {
             
             if (_agencias.Any(a => a.NumeroAgencia == novaAgencia.NumeroAgencia))
@@ -34,7 +34,7 @@ namespace BancoSENAIAPI.Controllers
         }
 
         [HttpGet("{codigo}")]
-        public IActionResult ConsultarPorCodigo(int codigo)
+        public async Task<IActionResult> ConsultarPorCodigo(int codigo)
         {
             var agencia = _agencias.FirstOrDefault(a => a.NumeroAgencia == codigo);
 
@@ -45,7 +45,7 @@ namespace BancoSENAIAPI.Controllers
         }
 
         [HttpPut("{codigo}")]
-        public IActionResult Alterar(int codigo, [FromBody] Agencia agenciaAtualizada)
+        public async Task<IActionResult> Alterar(int codigo, [FromBody] Agencia agenciaAtualizada)
         {
             var agenciaExistente = _agencias.FirstOrDefault(a => a.NumeroAgencia == codigo);
 
@@ -59,7 +59,7 @@ namespace BancoSENAIAPI.Controllers
         }
 
         [HttpDelete("{codigo}")]
-        public IActionResult Excluir(int codigo)
+        public async Task<IActionResult> Excluir(int codigo)
         {
             var agencia = _agencias.FirstOrDefault(a => a.NumeroAgencia == codigo);
 
