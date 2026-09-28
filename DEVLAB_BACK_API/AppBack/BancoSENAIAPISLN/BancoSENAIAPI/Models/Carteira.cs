@@ -2,17 +2,17 @@
 {
     public class Carteira
     {
-        public int idCarteira { get; set; }
-        public string tituloCarteira { get; set; } = string.Empty;
-        public decimal nivelApetite { get; set; }
+        public int NumeroCarteira { get; set; }
+        public string NomeCarteira { get; set; } = string.Empty;
+        public decimal ApetiteCarteira { get; set; }
 
         public Carteira(int numeroCarteira, string nomeCarteira, decimal apetiteCarteira = 1000000)
         {
-            idCarteira = numeroCarteira;
-            tituloCarteira = nomeCarteira;
-            nivelApetite = apetiteCarteira;
+            NumeroCarteira = numeroCarteira;
+            NomeCarteira = nomeCarteira;
+            ApetiteCarteira = apetiteCarteira;
 
-            if (apetiteCarteira < 0)
+            if (ApetiteCarteira < 0)
             {
                 throw new ArgumentException("Apetite carteira não pode ser negativo.");
             }

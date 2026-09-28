@@ -2,10 +2,10 @@
 {
     public class DocumentoMetadado
     {
-        public int idDoc { get; set; } 
-        public string nomeArquivo { get; set; }
-        public string extArquivo { get; set;}
-        public string caminhoArquivo { get; set; }
-        public int idCliente { get; set; }
+        public int Id { get; set; } 
+        public string Nome { get; set; }
+        public string Extensao { get; set;}
+        public string Caminho { get; set; }
+        public int CodigoCliente { get; set; }
     }
 }

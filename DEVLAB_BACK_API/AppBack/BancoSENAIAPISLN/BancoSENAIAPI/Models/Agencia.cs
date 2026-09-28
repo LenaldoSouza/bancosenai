@@ -1,15 +1,15 @@
 ﻿namespace BancoSENAIAPI.Models
 {
-    public class agencia
+    public class Agencia
     {
-        public int idAgencia { get; set; } 
-        public string nomeCidade { get; set; } = string.Empty;
-        public string ufEstado { get; set; } = string.Empty;
-        public agencia(int numeroAgencia, string cidade, string sigla)
+        public int NumeroAgencia { get; set; } 
+        public string Cidade { get; set; } = string.Empty;
+        public string SiglaEstado { get; set; } = string.Empty;
+        public Agencia(int numeroAgencia, string cidade, string sigla)
         {
-            idAgencia = numeroAgencia;
-            nomeCidade = cidade;
-            ufEstado = sigla;
+            NumeroAgencia = numeroAgencia;
+            Cidade = cidade;
+            SiglaEstado = sigla;
         }
     }
 }
