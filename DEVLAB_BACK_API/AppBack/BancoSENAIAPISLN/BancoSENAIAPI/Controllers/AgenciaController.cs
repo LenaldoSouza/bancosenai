@@ -1,5 +1,7 @@
-﻿using BancoSENAIAPI.Models;
+﻿using BancoSENAIAPI.Data;
+using BancoSENAIAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BancoSENAIAPI.Controllers
 {
@@ -7,67 +9,74 @@ namespace BancoSENAIAPI.Controllers
     [Route("api/v1/[controller]")]
     public class AgenciaController : ControllerBase
     {
-        private static List<Agencia> _agencias = new List<Agencia>
-        {
-            new Agencia (1001, "Aracaju", "SE" ),
-            new Agencia (2002, "São Paulo", "SP" ),
-            new Agencia (3003, "Salvador", "BA" )
-            //eu mudei isso só por chatisse minha mesmo :^)
-        };
+        private readonly AppDbContext _context;
 
-        [HttpGet]
-        public IActionResult ListarTodas()
+        public AgenciaController(AppDbContext context)
         {
-            return Ok(_agencias);
+            _context = context;
         }
 
-        [HttpPost]
-        public IActionResult Cadastrar([FromBody] Agencia novaAgencia)
+        [HttpGet]
+        public async Task<IActionResult> ListarTodas()
         {
-            
-            if (_agencias.Any(a => a.NumeroAgencia == novaAgencia.NumeroAgencia))
-                return BadRequest(new { message = "Este número de agência já existe." });
-
-            _agencias.Add(novaAgencia);
-            // Retorna Status 201 Created conforme boas práticas REST [6, 8]
-            return Created("", novaAgencia);
+            var agencias = await _context.Agencia.ToListAsync();
+            return Ok(agencias);
         }
 
         [HttpGet("{codigo}")]
-        public IActionResult ConsultarPorCodigo(int codigo)
+        public async Task<IActionResult> ConsultarPorCodigo(int codigo)
         {
-            var agencia = _agencias.FirstOrDefault(a => a.NumeroAgencia == codigo);
+            var agencia = await _context.Agencia
+                .FirstOrDefaultAsync(a => a.NumeroAgencia == codigo);
 
             if (agencia == null)
-                return NotFound(new { message = "Agência não encontrada." }); // Status 404 [6, 7]
+                return NotFound(new { message = "Agência não encontrada." });
 
-            return Ok(agencia); // Status 200 OK [6, 7]
+            return Ok(agencia);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Cadastrar([FromBody] Agencia novaAgencia)
+        {
+            if (await _context.Agencia.AnyAsync(a => a.NumeroAgencia == novaAgencia.NumeroAgencia))
+                return BadRequest(new { message = "Este número de agência já existe." });
+
+            await _context.Agencia.AddAsync(novaAgencia);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(ConsultarPorCodigo),
+                new { codigo = novaAgencia.NumeroAgencia }, novaAgencia);
         }
 
         [HttpPut("{codigo}")]
-        public IActionResult Alterar(int codigo, [FromBody] Agencia agenciaAtualizada)
+        public async Task<IActionResult> Alterar(int codigo, [FromBody] Agencia agenciaAtualizada)
         {
-            var agenciaExistente = _agencias.FirstOrDefault(a => a.NumeroAgencia == codigo);
+            var agenciaExistente = await _context.Agencia
+                .FirstOrDefaultAsync(a => a.NumeroAgencia == codigo);
 
-            if (agenciaExistente == null) return NotFound();
+            if (agenciaExistente == null)
+                return NotFound(new { message = "Agência não encontrada." });
 
             agenciaExistente.Cidade = agenciaAtualizada.Cidade;
             agenciaExistente.SiglaEstado = agenciaAtualizada.SiglaEstado;
 
-            // Retorna Status 204 No Content para atualizações bem-sucedidas [6, 9]
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpDelete("{codigo}")]
-        public IActionResult Excluir(int codigo)
+        public async Task<IActionResult> Excluir(int codigo)
         {
-            var agencia = _agencias.FirstOrDefault(a => a.NumeroAgencia == codigo);
+            var agencia = await _context.Agencia
+                .FirstOrDefaultAsync(a => a.NumeroAgencia == codigo);
 
-            if (agencia == null) return NotFound();
+            if (agencia == null)
+                return NotFound(new { message = "Agência não encontrada." });
 
-            _agencias.Remove(agencia);
-            return Ok(new { message = "Agência excluída com sucesso." }); // Status 200 [6]
+            _context.Agencia.Remove(agencia);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Agência excluída com sucesso." });
         }
-
     }
 }
