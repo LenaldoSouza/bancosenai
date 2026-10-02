@@ -69,7 +69,7 @@ namespace BancoSENAIAPI.Controllers
                 CodigoCliente = codigoCliente
             };
 
-            await _context.DocumentoMetadado.AddAsync(documentoMetadado);
+            await _context.Documento.AddAsync(documentoMetadado);
             await _context.SaveChangesAsync();
 
             return Created("", new
