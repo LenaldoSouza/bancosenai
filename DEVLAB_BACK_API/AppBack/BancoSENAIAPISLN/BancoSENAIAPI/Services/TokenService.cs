@@ -24,7 +24,7 @@ namespace BancoSENAIAPI.Services
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, usuario.NomeUsuario),
+                new Claim(JwtRegisteredClaimNames.Sub, usuario.Username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("id", usuario.Id.ToString())
             };

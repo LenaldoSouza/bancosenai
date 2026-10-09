@@ -41,10 +41,11 @@ namespace BancoSENAIAPI.Controllers
             return Created("", new { usuario.Id, usuario.Username });
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
         {
-            var usuario = await _context.Usuario.FirstOrDefaultAsync(u => u.Username == dto.NomeUsuario);
+            var usuario = await _context.Usuario.FirstOrDefaultAsync(u => u.Username == dto.NovoUsuario);
 
             if (usuario == null || BCrypt.Net.BCrypt.Verify(dto.Senha, usuario.SenhaHash))
             {
@@ -53,7 +54,7 @@ namespace BancoSENAIAPI.Controllers
 
             var (token, expiraEm) = _tokenService.GerarToken(usuario);
 
-            return Ok(new LoginRequestDto { Token = token, ExpiraEm = expiraEm });
+            return Ok(new LoginResponseDto { Token = token, ExpiraEm = expiraEm });
         }
     }
 }
