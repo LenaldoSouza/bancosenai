@@ -36,7 +36,7 @@ namespace BancoSENAIAPI.Repositories
             clienteExistente.CPF = cliente.CPF;
             clienteExistente.NumeroAgencia = cliente.NumeroAgencia;
             clienteExistente.SaldoTotal = cliente.SaldoTotal;
-            clienteExistente.Sexo = cliente.Sexo;
+            clienteExistente.SexoMF = cliente.SexoMF;
             clienteExistente.Endereco = cliente.Endereco;
             clienteExistente.Cidade = cliente.Cidade;
             clienteExistente.Estado = cliente.Estado;
