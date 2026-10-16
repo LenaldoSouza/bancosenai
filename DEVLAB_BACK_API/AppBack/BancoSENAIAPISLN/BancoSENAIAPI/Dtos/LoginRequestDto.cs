@@ -5,7 +5,7 @@ namespace BancoSENAIAPI.Dtos
     public class LoginRequestDto
     {
         [Required]
-        public required string NovoUsuario { get; set; }
+        public required string NomeUsuario { get; set; }
         [Required]
         public string Senha { get; set; }
     }

@@ -1,7 +1,10 @@
-﻿namespace BancoSENAIAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BancoSENAIAPI.Models
 {
     public class Cliente
     {
+        [Key]
         public int CodigoCliente { get; set; }
         public string NomeCliente { get; set; } = string.Empty;
         public string CPF { get; set; } = string.Empty;

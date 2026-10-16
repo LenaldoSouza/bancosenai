@@ -45,11 +45,11 @@ namespace BancoSENAIAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
         {
-            var usuario = await _context.Usuario.FirstOrDefaultAsync(u => u.Username == dto.NovoUsuario);
+            var usuario = await _context.Usuario.FirstOrDefaultAsync(u => u.Username == dto.NomeUsuario);
 
-            if (usuario == null || BCrypt.Net.BCrypt.Verify(dto.Senha, usuario.SenhaHash))
+            if (usuario == null || !BCrypt.Net.BCrypt.Verify(dto.Senha, usuario.SenhaHash))
             {
-                return Unauthorized(new {message = "Usuário ou senha não inválidos"});
+                return Unauthorized(new {message = "Usuário ou senha inválidos"});
             }
 
             var (token, expiraEm) = _tokenService.GerarToken(usuario);
